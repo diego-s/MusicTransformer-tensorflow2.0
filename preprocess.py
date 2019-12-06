@@ -38,7 +38,11 @@ def preprocess_midi_files_under(midi_root, save_dir):
         except EOFError:
             print('EOF Error')
 
-        with open('{}/{}.pickle'.format(save_dir,path.split('/')[-1]), 'wb') as f:
+        output_path = '{}/{}.pickle'.format(save_dir,path.split('/')[-1])
+        if os.path.isfile(output_path):
+            continue
+
+        with open(output_path, 'wb') as f:
             pickle.dump(data, f)
 
 
