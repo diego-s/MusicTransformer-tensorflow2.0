@@ -30,6 +30,10 @@ def preprocess_midi_files_under(midi_root, save_dir):
     for path in Bar('Processing').iter(midi_paths):
         print(' ', end='[{}]'.format(path), flush=True)
 
+        output_path = '{}/{}.pickle'.format(save_dir,path.split('/')[-1])
+        if os.path.isfile(output_path):
+            continue
+        
         try:
             data = preprocess_midi(path)
         except KeyboardInterrupt:
@@ -37,11 +41,7 @@ def preprocess_midi_files_under(midi_root, save_dir):
             return
         except EOFError:
             print('EOF Error')
-
-        output_path = '{}/{}.pickle'.format(save_dir,path.split('/')[-1])
-        if os.path.isfile(output_path):
-            continue
-
+        
         with open(output_path, 'wb') as f:
             pickle.dump(data, f)
 
